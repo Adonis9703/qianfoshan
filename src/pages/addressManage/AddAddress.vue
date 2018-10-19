@@ -20,10 +20,18 @@
       </div>
     </div>
     <div class="text-align-center relative" style="top: 1.5rem;">
-    <button class="btn-save" :class="{'disable': !saveBtnAble}" @click="save">保存</button>
+    <!--<button class="btn-save" :class="{'disable': !saveBtnAble}" @click="save">保存</button>-->
+      <!--<button class="btn-delete" @click="" style="margin-top: .5rem">删除</button>-->
     </div>
     <div class="cover" v-show="isChooseShow" @click="isChooseShow = false"></div>
     <van-area :area-list="areaList" class="choose-area" @confirm="confirm" @cancel="isChooseShow = false" :class="{show: isChooseShow}"></van-area>
+    <div v-if="type==0" class="foot">
+      <van-button @click="deleteAddress" type="default" class="width100 font-size106" style="margin-right: .2rem">删除</van-button>
+      <van-button :disabled="!saveBtnAble" class="blue-btn" style="margin-left: .2rem" @click="save">保存</van-button>
+    </div>
+    <div v-else class="foot">
+      <van-button :disabled="!saveBtnAble" class="blue-btn" style="margin-left: .2rem" @click="save">保存</van-button>
+    </div>
   </div>
 </template>
 
@@ -144,6 +152,20 @@
         }).then(res => {
           this.$router.go(-1)
         })
+      },
+      deleteAddress() {
+        this.$post({
+          url: this.$api.deleteAddress,
+          param: {
+            id: this.address.id
+          },
+          postType: 'json'
+        }).then(res => {
+          this.$toast(`删除成功`)
+          setTimeout(() => {
+            this.$router.go(-1)
+          },1000)
+        })
       }
     }
   }
@@ -209,6 +231,13 @@
     width: 100%;
     /*background-color: rgba(0,0,0,.2);*/
     height: calc(100% - 16rem);
+  }
+  .btn-delete {
+    height: 2.88rem;
+    width: 89.3%;
+    color: #fff;
+    background-color: #dd7c5a;
+    border-radius: .25rem;
   }
   .btn-save {
     /*position: fixed;*/
