@@ -41,7 +41,7 @@
       <div class="address">
         <p class="detail">{{record.detailAddress}}</p>
         <p class="user-inf">
-          <span class="margin-right1">{{record.patientName}}</span>{{record.phone}}
+          <span class="margin-right1">{{record.mandataryName}}</span>{{record.mandataryPhone}}
         </p>
       </div>
       <div class="ask-inf">
