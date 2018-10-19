@@ -11,22 +11,31 @@
       </div>
       <div class="field van-hairline--bottom">
         <span class="title">所在地区</span>
-        <div class="choose" @click="isChooseShow = true" :class="{'color-333': address.sendAddress !== '请选择省市区'}">{{address.sendAddress}}</div>
+        <div class="choose" @click="isChooseShow = true" :class="{'color-333': address.sendAddress !== '请选择省市区'}">
+          {{address.sendAddress}}
+        </div>
         <i class="icon_enter"></i>
       </div>
       <div class="field ">
         <span class="title">详细地址</span>
-        <textarea class="detail" type="text" maxlength="50" placeholder="请输入街道、楼牌号等详细信息" v-model.trim="address.detailAddress"></textarea>
+        <textarea class="detail" type="text" maxlength="50" placeholder="请输入街道、楼牌号等详细信息"
+                  v-model.trim="address.detailAddress"></textarea>
       </div>
     </div>
     <div class="text-align-center relative" style="top: 1.5rem;">
-    <!--<button class="btn-save" :class="{'disable': !saveBtnAble}" @click="save">保存</button>-->
+      <!--<button class="btn-save" :class="{'disable': !saveBtnAble}" @click="save">保存</button>-->
       <!--<button class="btn-delete" @click="" style="margin-top: .5rem">删除</button>-->
     </div>
     <div class="cover" v-show="isChooseShow" @click="isChooseShow = false"></div>
-    <van-area :area-list="areaList" class="choose-area" @confirm="confirm" @cancel="isChooseShow = false" :class="{show: isChooseShow}"></van-area>
+    <div style="margin-top: 4rem;margin-right: 1px"></div>
+    <van-popup v-model="isChooseShow" position="bottom">
+      <van-area :area-list="areaList" @confirm="confirm" @cancel="isChooseShow = false"
+                :class="{show: isChooseShow}"></van-area>
+
+    </van-popup>
     <div v-if="type==0" class="foot">
-      <van-button @click="deleteAddress" type="default" class="width100 font-size106" style="margin-right: .2rem">删除</van-button>
+      <van-button @click="deleteAddress" type="default" class="width100 font-size106" style="margin-right: .2rem">删除
+      </van-button>
       <van-button :disabled="!saveBtnAble" class="blue-btn" style="margin-left: .2rem" @click="save">保存</van-button>
     </div>
     <div v-else class="foot">
@@ -38,7 +47,7 @@
 <script>
   import TopBar from '@/components/TopBar.vue'
   import areaList from '@/utils/address'
-  import { Area } from 'vant'
+  import {Area} from 'vant'
 
   export default {
     name: 'AddAddress',
@@ -46,12 +55,12 @@
       TopBar,
       VanArea: Area
     },
-    data () {
+    data() {
       return {
         type: undefined, // 0 编辑 1 新增
         address: {
           sendAddress: '请选择省市区',
-          detailAddress:'',
+          detailAddress: '',
           mandataryName: '',
           mandataryPhone: '',
         },
@@ -64,12 +73,12 @@
         return this.address.mandataryName && this.address.mandataryPhone && this.address.sendAddress !== '请选择省市区' && this.address.detailAddress
       }
     },
-    created(){
+    created() {
       console.log(this.$route)
       let user = this.$common.getUserInfoFMLocal()
       let type = this.$route.query.type // 0 编辑 1 新增
       this.type = type
-      if(type === 0) {
+      if (type === 0) {
         this.address = JSON.parse(this.$route.params.address)
       }
       this.address = Object.assign(this.address, {
@@ -81,10 +90,10 @@
       confirm(data) {
         let province = data[0].name
         let sendAddress = ''
-        if(['北京市', '天津市', '重庆市', '上海市'].indexOf(province) > -1) {
+        if (['北京市', '天津市', '重庆市', '上海市'].indexOf(province) > -1) {
           sendAddress = data[0].name + data[2].name
         } else {
-          sendAddress =data[0].name + data[1].name + data[2].name
+          sendAddress = data[0].name + data[1].name + data[2].name
         }
         this.address = Object.assign({}, this.address, {
           // province: data[0].name,
@@ -96,25 +105,25 @@
       },
       save() {
         // this.address.detailAddress.trim()
-        if(!this.saveBtnAble) {
+        if (!this.saveBtnAble) {
           return
-        } else if(this.address.mandataryName.length === 0 || this.address.mandataryName.length > 20) {
+        } else if (this.address.mandataryName.length === 0 || this.address.mandataryName.length > 20) {
           this.$toast('请输入20位以下姓名')
           return
-        } else if(!this.$validate.isMobile(this.address.mandataryPhone)) {
+        } else if (!this.$validate.isMobile(this.address.mandataryPhone)) {
           this.$toast('手机号格式错误')
           return
-        } else if(this.address.sendAddress === '请选择省市区'){
+        } else if (this.address.sendAddress === '请选择省市区') {
           this.$toast('请选择所在地区')
           return
-        } else if(!this.address.detailAddress){
+        } else if (!this.address.detailAddress) {
           this.$toast('请输入详细地址')
           return
         }
-        if(this.type == 0) {
+        if (this.type == 0) {
           console.log('updateAddress')
           this.updateAddress()
-        }else if(this.type == 1) {
+        } else if (this.type == 1) {
           console.log('addAddress')
           this.addAddress()
         }
@@ -135,7 +144,7 @@
           postType: 'json',
           isLoading: true
         }).then(res => {
-          if(res.data.I === '成功') {
+          if (res.data.I === '成功') {
             this.$router.go(-1)
           } else {
             this.$toast.fail(res.data.I)
@@ -164,7 +173,7 @@
           this.$toast(`删除成功`)
           setTimeout(() => {
             this.$router.go(-1)
-          },1000)
+          }, 1000)
         })
       }
     }
@@ -177,10 +186,11 @@
     position: relative;
     background-color: #f6f6f6;
     height: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
   }
+
   .input-area {
-    padding-left:.88rem;
+    padding-left: .88rem;
     background-color: #fff;
   }
 
@@ -200,31 +210,36 @@
       flex-grow: 1;
     }
   }
+
   .icon_enter {
     display: inline-block;
     height: 1rem;
     width: 1rem;
     background-image: url('../../assets/images/icon_enter.png');
-    -webkit-background-size:1rem 1rem;
+    -webkit-background-size: 1rem 1rem;
     background-size: 1rem 1rem;
   }
+
   .title {
     width: 5.31rem;
     text-align: left;
     color: #999;
   }
+
   .choose {
     color: #ddd;
     flex-grow: 1;
     text-align: left;
-    &.color-333{
+    &.color-333 {
       color: #333;
     }
   }
+
   .detail {
     height: 2.75rem;
     flex-grow: 1;
   }
+
   .cover {
     position: absolute;
     top: 0;
@@ -232,6 +247,7 @@
     /*background-color: rgba(0,0,0,.2);*/
     height: calc(100% - 16rem);
   }
+
   .btn-delete {
     height: 2.88rem;
     width: 89.3%;
@@ -239,6 +255,7 @@
     background-color: #dd7c5a;
     border-radius: .25rem;
   }
+
   .btn-save {
     /*position: fixed;*/
     /*bottom:2.5rem;*/
@@ -247,11 +264,12 @@
     width: 89.3%;
     color: #fff;
     background-color: #1C97FC;
-    &.disable{
+    &.disable {
       background-color: #B4D9F8;
     }
     border-radius: .25rem;
   }
+
   .choose-area {
     position: absolute;
     width: 100%;
