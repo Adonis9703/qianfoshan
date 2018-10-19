@@ -57,7 +57,6 @@
     methods: {
       goProgress() {
         this.$router.push({name: 'FillInfo'})
-        // console.log(`gogogogogo`)
       }
     }
   }

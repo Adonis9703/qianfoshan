@@ -16,7 +16,7 @@
       </div>
       <div class="field ">
         <span class="title">详细地址</span>
-        <textarea class="detail" type="text" placeholder="请输入街道、楼牌号等详细信息" v-model.trim="address.detailAddress"></textarea>
+        <textarea class="detail" type="text" maxlength="50" placeholder="请输入街道、楼牌号等详细信息" v-model.trim="address.detailAddress"></textarea>
       </div>
     </div>
     <div class="text-align-center relative" style="top: 1.5rem;">
