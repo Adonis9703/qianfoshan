@@ -23,10 +23,23 @@
     methods: {
       back() {
         this.$router.go(-1)
+      },
+      scroll() {
+        window.addEventListener("resize", () => {
+          if (document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') {
+            window.setTimeout(() => {
+              document.activeElement.scrollIntoViewIfNeeded()
+            }, 0)
+          }
+        })
+
+        let scrollView = document.getElementsByTagName("input")
+
       }
     },
     created() {
       this.active = Number(localStorage.getItem('active'))
+      this.scroll()
       // let fontSize = (window.screen.width / 375) * 16;
       // document.documentElement.style.fontSize = fontSize + 'px';
     },

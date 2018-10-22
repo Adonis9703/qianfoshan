@@ -29,15 +29,18 @@
         <div class="green">已寄出</div>
         <img :src="delivered" class="inline-block"/>
       </div>
-      <div class="state flex-align-spacebetween" v-if="record.applicationState == '7'">
+      <div class="state " v-if="record.applicationState == '7'">
+        <div class="flex-align-spacebetween">
         <div class="red">已拒绝</div>
         <img :src="refused" class="inline-block"/>
+        </div>
+        <span class="reason">{{record.refuseReason}}</span>
       </div>
       <div class="state flex-align-spacebetween" v-if="record.applicationState == '8'">
         <div class="red">已取消</div>
         <img :src="refused" class="inline-block"/>
       </div>
-
+      <div style="clear: both;"></div>
       <div class="address">
         <p class="detail">{{record.detailAddress}}</p>
         <p class="user-inf">
@@ -121,19 +124,15 @@
     },
     methods: {
       copy() {
-        let clipboard = new Clipboard('.btn-copy')
-        if (this.record.logisticsNumber) {
+        if (this.record.logisticsNumber=='无' || !this.record.logisticsNumber) {
+          this.$toast(`暂无物流单号`)
+          return
+        } else {
+          let clipboard = new Clipboard('.btn-copy')
           clipboard.on('success', e => {
             this.$toast(`复制成功`)
             clipboard.destroy()
           })
-          // let input = this.$refs.expressNum;
-          // // let input = document.getElementById('expressNum')
-          // input.select(); //选择对象
-          // document.execCommand("Copy"); //执行浏览器复制命令
-          // this.$toast(`复制成功`)
-        } else {
-          this.$toast(`暂无物流单号`)
         }
       },
       cancel() {
@@ -157,6 +156,16 @@
 </script>
 
 <style lang="scss" scoped>
+  .reason {
+    /*float: left;*/
+    display: inline-block;
+    width: 10rem;
+    position:relative;
+    top: -2rem;
+    color: #888888;
+    font-size: .81rem;
+
+  }
   .foot {
     position: fixed;
     bottom: 0;
@@ -179,7 +188,7 @@
     padding-left: 3.75rem;
     margin-bottom: .5rem;
     background-color: #fff;
-    height: 6.25rem;
+    /*height: 6.25rem;*/
     font-size: 1.13rem;
     img {
       height: 6.25rem;
