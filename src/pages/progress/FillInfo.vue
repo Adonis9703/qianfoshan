@@ -3,7 +3,7 @@
     <div class="personal">
       <div class="title">个人信息</div>
       <div class="field van-hairline--bottom">
-        <span class="title">姓名</span>
+        <span class="title">患者姓名</span>
         <input type="text" v-model="formData.name" placeholder="请输入真实的姓名"/>
       </div>
       <div class="field van-hairline--bottom">
@@ -25,7 +25,7 @@
     <div class="inpatient">
       <div class="field van-hairline--bottom">
         <span class="title">住院号</span>
-        <input v-model="formData.inpatientCode" type="text" placeholder="请输入"/>
+        <input v-model="formData.inpatientCode" type="text" placeholder="请输入住院号后六位"/>
       </div>
       <div class="field van-hairline--bottom">
         <span class="title">出院状态</span>
@@ -38,7 +38,7 @@
               <i class="van-icon van-icon-check color-999" style="margin-right: .3rem"></i> 已出院
             </div>
           </div>
-          <div class="inline-block" @click="formData.inpatientState=0">
+          <div class="inline-block" @click="formData.inpatientState=0; formData.endDate=''">
             <div v-if="formData.inpatientState==1" class="flex-align">
               <i class="van-icon van-icon-check color-999" style="margin-right: .3rem"></i> 未出院
             </div>
@@ -55,7 +55,7 @@
         <!--<span @click="selectTime(1)" style="color: #dddddd">请选择</span>-->
         <div class="font-size88 split">至</div>
         <input readonly placeholder="请选择" class="color-blue date-width" v-model="formData.endDate"
-               @click="selectTime(2)"/>
+              :disabled="formData.inpatientState==0" @click="selectTime(2)"/>
       </div>
     </div>
     <div class="known-check font-size88 flex-align" @click="known=!known">
@@ -66,7 +66,7 @@
     <div style="background-color: #f6f6f6;height: 60px;width: 1px"></div>
     <div class="foot">
       <van-button type="default" class="width100 font-size106 margin-right"
-                  @click.stop="$router.replace({name: 'AskRecord'})">申请记录
+                  @click.stop="$router.push({name: 'AskRecord'})">申请记录
       </van-button>
       <van-button class="blue-btn margin-left" @click="nextStep">下一步</van-button>
     </div>
@@ -126,7 +126,7 @@
           code: '',
           idCard: '',
           inpatientCode: '',
-          inpatientState: '1',
+          inpatientState: '1', //1=出院 0=未出院
           startDate: '',
           endDate: '',
         }
@@ -235,11 +235,18 @@
           } else if (!params.inDate) {
             this.$toast(`请选择入院时间`)
             return
-          } else if (!params.outDate) {
+          }
+          else if (params.state == 1 && !params.outDate) {
             this.$toast(`请选择出院时间`)
             return
           }
-          // console.log(item)
+          // if (params.state == '1'){
+          //   if (!params.outDate){
+          //     this.$toast(`请选择出院时间`)
+          //     return
+          //   }
+          // }
+          // // console.log(item)
           this.$post({
             isLoading: true,
             url: this.$api.fillPatientInfo,
@@ -356,7 +363,7 @@
     }
     .title {
       width: 100%;
-      /*margin-bottom: 0.35rem;*/
+      margin-bottom: 0.35rem;
     }
     .date-width {
       font-family: SanFranciscoText-Medium;

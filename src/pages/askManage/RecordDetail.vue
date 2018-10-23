@@ -42,7 +42,8 @@
       </div>
       <div style="clear: both;"></div>
       <div class="address">
-        <p class="detail">{{record.detailAddress}}</p>
+        <p class="detail">{{record.sendAddress}}</p>
+        <p class="detail" style="margin-top: .3rem">{{record.detailAddress}}</p>
         <p class="user-inf">
           <span class="margin-right1">{{record.mandataryName}}</span>{{record.mandataryPhone}}
         </p>

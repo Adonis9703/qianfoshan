@@ -3,7 +3,9 @@
     <div class="top-bar van-hairline--bottom">
       <img class="back" :src="IconBack" @click="back"/> {{title}}
     </div>
-    <router-view class="page"/>
+    <keep-alive>
+      <router-view class="page"/>
+    </keep-alive>
   </div>
 </template>
 

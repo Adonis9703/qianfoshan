@@ -1,8 +1,9 @@
 <template>
   <div class="trans-type">
     <div class="panel bgcolor-white">
-      <div class="title">配送方式：邮寄</div>
+      <div class="title">配送方式：顺丰速运</div>
       <p>为能及时收到复印病历，请确保收件地址填写无误</p>
+      <p>目前仅支持顺丰速运，快递费用以顺丰市场价为标准</p>
     </div>
     <img :src="border" style="display: block; width: 100%"/>
     <div class="form-content bgcolor-white">
@@ -148,6 +149,7 @@
 
 <style lang="scss" scoped>
   .trans-type {
+
     background-color: #f6f6f6;
     .field {
       display: flex;
@@ -233,7 +235,7 @@
     }
 
     .panel {
-      height: 5.81rem;
+      height: 6.81rem;
       padding: 1.38rem 0.88rem;
       .title {
         font-size: 1rem;
@@ -241,7 +243,7 @@
         line-height: 1.38rem;
       }
       p {
-        margin-top: 0.5rem;
+        margin-top: 0.4rem;
         font-size: 0.88rem;
         color: #999999;
       }

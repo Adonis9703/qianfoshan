@@ -1,5 +1,5 @@
-//let baseUrl = 'http://test.zpq.ucmed.cn/'
-let baseUrl =  'http://192.168.0.10:8080/'
+let baseUrl = 'http://qfsblyjmed.zwjk.com/'  //测试
+// let baseUrl =  'http://qfsblyj.zwjk.com/'  //生产
 
 export const api = {
   getAddress: baseUrl + 'address/getaddressinfo',         //获取地址信息
