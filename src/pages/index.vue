@@ -30,6 +30,7 @@
   export default {
     name: 'Index',
     created() {
+      console.log(1111111, this.$route.params.loginName)
     },
     data() {
       return {

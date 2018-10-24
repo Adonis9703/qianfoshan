@@ -18,13 +18,12 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/:loginName',
       name: 'Index',
       component: Index,
     },
     {
       path: '/addAddress',
-      // path: '/addAddress',
       name: 'AddAddress',
       component: AddAddress
     },
@@ -40,7 +39,6 @@ export default new Router({
     },
     {
       path: '/recordDetail',
-      // path: '/',
       name: 'RecordDetail',
       component: RecordDetail
     },

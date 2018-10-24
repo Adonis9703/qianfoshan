@@ -187,7 +187,7 @@
 
       },
       setTime() {
-        const TIME_COUNT = 60
+        const TIME_COUNT = 120
         if (!this.timer) {
           this.count = TIME_COUNT
           this.show = false
