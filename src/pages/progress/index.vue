@@ -13,8 +13,9 @@
       </div>
     </div>
     <keep-alive>
-      <router-view class="height100"/>
+      <router-view v-if="$route.meta.keepAlive" class="height100"/>
     </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" class="height100"/>
   </div>
 </template>
 

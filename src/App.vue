@@ -4,8 +4,9 @@
       <img class="back" :src="IconBack" @click="back"/> {{title}}
     </div>
     <keep-alive>
-      <router-view class="page"/>
+      <router-view v-if="$route.meta.keepAlive" class="page"/>
     </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" class="page"/>
   </div>
 </template>
 

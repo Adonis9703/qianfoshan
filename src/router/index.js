@@ -30,7 +30,7 @@ export default new Router({
     {
       path: '/selectAddress',
       name: 'SelectAddress',
-      component: SelectAddress
+      component: SelectAddress,
     },
     {
       path: '/askRecord',
@@ -55,7 +55,10 @@ export default new Router({
         {
           path: '/fillInfo',
           name: 'FillInfo',
-          component: FillInfo
+          component: FillInfo,
+          meta: {
+            keepAlive: true
+          }
         },
         {
           path: '/transType',
