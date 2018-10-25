@@ -89,6 +89,7 @@
             ownIdcardFacade: res.data.url
           })
           this.$common.setUserInfo2Local(user)
+          this.$toast(`上传成功`)
         })
       },
       onRead2(file) {
@@ -106,6 +107,7 @@
             ownIdcardIdentity: res.data.url
           })
           this.$common.setUserInfo2Local(user)
+          this.$toast(`上传成功`)
         })
       },
       onRead3(file) {
@@ -123,6 +125,7 @@
             ownWithIdcardUrl: res.data.url
           })
           this.$common.setUserInfo2Local(user)
+          this.$toast(`上传成功`)
         })
       },
       submit() {

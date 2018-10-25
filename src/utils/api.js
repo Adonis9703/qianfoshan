@@ -1,4 +1,4 @@
-let baseUrl = 'http://qfsblyjmed.zwjk.com/'  //测试
+let baseUrl = 'https://qfsblyjmed.zwjk.com/'  //测试
 // let baseUrl =  'http://qfsblyj.zwjk.com/'  //生产
 
 export const api = {

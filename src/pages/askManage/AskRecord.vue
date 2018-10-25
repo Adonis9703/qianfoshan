@@ -35,10 +35,11 @@
         this.$router.push({name: 'RecordDetail', params: {detail: JSON.stringify(item)}})
       },
       getData() {
+        let user = this.$common.getUserInfoFMLocal()
         this.$post({
           url: this.$api.getAskRecord,
           param: {
-           loginName: localStorage.getItem('loginName')
+           loginName: user.loginName
           },
           postType: 'json',
           isLoading: true
