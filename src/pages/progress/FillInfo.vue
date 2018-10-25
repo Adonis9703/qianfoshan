@@ -129,11 +129,14 @@
           inpatientState: '1', //1=出院 0=未出院
           startDate: '',
           endDate: '',
-        }
+        },
+        user: {}
       }
     },
     created() {
       localStorage.setItem('active', '0')
+      this.user = this.$common.getUserInfoFMLocal()
+      console.log(this.user)
     },
     methods: {
       selectTime(v) {
@@ -240,13 +243,6 @@
             this.$toast(`请选择出院时间`)
             return
           }
-          // if (params.state == '1'){
-          //   if (!params.outDate){
-          //     this.$toast(`请选择出院时间`)
-          //     return
-          //   }
-          // }
-          // // console.log(item)
           this.$post({
             isLoading: true,
             url: this.$api.fillPatientInfo,
@@ -255,13 +251,12 @@
           }).then(res => {
             if (res.data.R == 200) {
               delete params.valid
-              this.$common.setUserInfo2Local(params)
-              console.log(this.$common.getUserInfoFMLocal())
+              this.user = Object.assign(this.user, params)
+              this.$common.setUserInfo2Local(this.user)
               this.$router.push({name: 'TransType'})
             } else {
               this.isShowError = true
               this.errorInfo = res.data.I
-              // this.$toast(`${res.data.I}`)
               return
             }
           })
@@ -270,7 +265,6 @@
         else {
           this.$toast(`请先确认预约须知`)
         }
-        // console.log(this.known.toString())
       }
     }
   }

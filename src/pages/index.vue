@@ -30,7 +30,11 @@
   export default {
     name: 'Index',
     created() {
-      console.log(1111111, this.$route.params.loginName)
+      let temp = this.$route.query.loginName
+      let user = {
+        loginName: temp
+      }
+      this.$common.setUserInfo2Local(user)
     },
     data() {
       return {
