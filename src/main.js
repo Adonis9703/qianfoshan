@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import 'babel-polyfill'
 import Clipboard from 'clipboard'
 
 import {logger, cache, post, api, date, validate, common} from '@/utils'
