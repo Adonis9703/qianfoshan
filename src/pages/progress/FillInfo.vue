@@ -19,7 +19,7 @@
       </div>
       <div class="field">
         <span class="title">身份证号</span>
-        <input v-model="formData.idCard" maxlength="18" type="text" placeholder="选填"/>
+        <input v-model="formData.idCard" maxlength="18" type="text" placeholder="请输入身份证号"/>
       </div>
     </div>
     <div class="inpatient">
@@ -50,18 +50,17 @@
       </div>
       <div class="field">
         <span class="title">住院时间</span>
-        <input readonly placeholder="请选择" class="color-blue date-width" v-model="formData.startDate"
+        <input readonly unselectable="on" onfocus="this.blur()" placeholder="请选择" class="color-blue date-width" v-model="formData.startDate"
                @click="selectTime(1)"/>
-        <!--<span @click="selectTime(1)" style="color: #dddddd">请选择</span>-->
         <div class="font-size88 split">至</div>
-        <input readonly placeholder="请选择" class="color-blue date-width" v-model="formData.endDate"
+        <input readonly unselectable="on" onfocus="this.blur()" placeholder="请选择" class="color-blue date-width" v-model="formData.endDate"
               :disabled="formData.inpatientState==0" @click="selectTime(2)"/>
       </div>
     </div>
     <div class="known-check font-size88 flex-align" @click="known=!known">
       <div class="check inline-block"><i v-show="known" class="van-icon van-icon-success"/></div>
       我已阅读
-      <span class="color-blue inline-block" @click.stop="$router.replace({name: 'Index'})">  《预约须知》</span>
+      <span class="color-blue inline-block" @click.stop="$router.push({name: 'Index'})">  《预约须知》</span>
     </div>
     <div style="background-color: #f6f6f6;height: 60px;width: 1px"></div>
     <div class="foot">

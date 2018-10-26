@@ -30,7 +30,6 @@
       </van-uploader>
       <div class="title font-size88">示例：身份证团徽面（反面）</div>
 
-      <!--<input type="file" ref="takePicture3" accept="image/*" capture="camera" style="display: none">-->
       <van-uploader :after-read="onRead3" accept="image/*">
         <img :src="inHandUrl" class="img"/>
         <div v-if="inHandUrl == idCardInHand" class="image-edit flex-align-justify">
@@ -74,59 +73,153 @@
       localStorage.setItem('active', '3')
     },
     methods: {
+      compress(img) {
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        let initSize = img.src.length;
+        let width = img.width;
+        let height = img.height;
+        canvas.width = width;
+        canvas.height = height;
+        // 铺底色
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, width, height);
+
+        //进行最小压缩
+        let ndata = canvas.toDataURL("image/jpeg", 0.1);
+        // console.log("*******压缩后的图片大小*******");
+        // console.log(ndata)
+        // console.log(ndata.length);
+        return ndata;
+      },
+      dataURItoBlob(base64Data) {
+        var byteString;
+        if (base64Data.split(",")[0].indexOf("base64") >= 0)
+          byteString = atob(base64Data.split(",")[1]);
+        else byteString = unescape(base64Data.split(",")[1]);
+        var mimeString = base64Data
+          .split(",")[0]
+          .split(":")[1]
+          .split(";")[0];
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ia], {type: mimeString});
+      },
       onRead1(file) {
-        this.frontUrl = file.content
-        let temp = new FormData()
-        temp.append('file', file.file, file.file.name)
-        this.$post({
-          isLoading: true,
-          url: this.$api.uploadFront,
-          param: temp,
-          postType: 'file'
-        }).then(res => {
-          let user = this.$common.getUserInfoFMLocal()
-          user = Object.assign(user, {
-            ownIdcardFacade: res.data.url
-          })
-          this.$common.setUserInfo2Local(user)
-          this.$toast(`上传成功`)
-        })
+        let self = this
+        let reader = new FileReader()
+        reader.readAsDataURL(file.file)
+        reader.onloadend = function () {
+          let result = this.result
+          let img = new Image()
+          img.src = result
+          console.log(`未压缩前大小===> `, result.length)
+          img.onload = function () {
+            let data = self.compress(img)
+            self.imgUrl = result
+            let blob = self.dataURItoBlob(data)
+            console.log(`blob ===> `, blob)
+            let formData = new FormData()
+            formData.append("file", blob)
+            console.log(`formData ===> `, formData.get("file"))
+            self.frontUrl = file.content
+            self.$post({
+              isLoading: true,
+              url: self.$api.uploadFront,
+              param: formData,
+              postType: 'file'
+            }).then(res => {
+              let user = self.$common.getUserInfoFMLocal()
+              user = Object.assign(user, {
+                ownIdcardFacade: res.data.url
+              })
+              self.$common.setUserInfo2Local(user)
+              self.$toast(`上传成功`)
+            }, err => {
+              self.$toast(`上传失败`)
+            })
+          }
+        }
+
       },
       onRead2(file) {
-        this.behindUrl = file.content
-        let temp = new FormData()
-        temp.append('file', file.file, file.file.name)
-        this.$post({
-          isLoading: true,
-          url: this.$api.uploadBehind,
-          param: temp,
-          postType: 'file'
-        }).then(res => {
-          let user = this.$common.getUserInfoFMLocal()
-          user = Object.assign(user, {
-            ownIdcardIdentity: res.data.url
-          })
-          this.$common.setUserInfo2Local(user)
-          this.$toast(`上传成功`)
-        })
+        let self = this
+        if (/^image/.test(file.file.type)) {
+          let reader = new FileReader()
+          reader.readAsDataURL(file.file)
+          reader.onloadend = function () {
+            let result = this.result
+            let img = new Image()
+            img.src = result
+            console.log(`未压缩前大小===> `, result.length)
+            img.onload = function () {
+              let data = self.compress(img)
+              self.imgUrl = result
+              let blob = self.dataURItoBlob(data)
+              console.log(`blob ===> `, blob)
+              let formData = new FormData()
+              formData.append("file", blob)
+              console.log(`formData ===> `, formData.get("file"))
+              self.behindUrl = file.content
+              self.$post({
+                isLoading: true,
+                url: self.$api.uploadBehind,
+                param: formData,
+                postType: 'file'
+              }).then(res => {
+                let user = self.$common.getUserInfoFMLocal()
+                user = Object.assign(user, {
+                  ownIdcardIdentity: res.data.url
+                })
+                self.$common.setUserInfo2Local(user)
+                self.$toast(`上传成功`)
+              }, err => {
+                self.$toast(`上传失败`)
+              })
+            }
+          }
+        }
       },
       onRead3(file) {
-        this.inHandUrl = file.content
-        let temp = new FormData()
-        temp.append('file', file.file, file.file.name)
-        this.$post({
-          isLoading: true,
-          url: this.$api.uploadInHand,
-          param: temp,
-          postType: 'file'
-        }).then(res => {
-          let user = this.$common.getUserInfoFMLocal()
-          user = Object.assign(user, {
-            ownWithIdcardUrl: res.data.url
-          })
-          this.$common.setUserInfo2Local(user)
-          this.$toast(`上传成功`)
-        })
+        let self = this
+        if (/^image/.test(file.file.type)) {
+          let reader = new FileReader()
+          reader.readAsDataURL(file.file)
+          reader.onloadend = function () {
+            let result = this.result
+            let img = new Image()
+            img.src = result
+            console.log(`未压缩前大小===> `, result.length)
+            img.onload = function () {
+              let data = self.compress(img)
+              self.imgUrl = result
+              let blob = self.dataURItoBlob(data)
+              console.log(`blob ===> `, blob)
+              let formData = new FormData()
+              formData.append("file", blob)
+              console.log(`formData ===> `, formData.get("file"))
+              self.inHandUrl = file.content
+              self.$post({
+                isLoading: true,
+                url: self.$api.uploadInHand,
+                param: formData,
+                postType: 'file'
+              }).then(res => {
+                let user = self.$common.getUserInfoFMLocal()
+                user = Object.assign(user, {
+                  ownWithIdcardUrl: res.data.url
+                })
+                self.$common.setUserInfo2Local(user)
+                self.$toast(`上传成功`)
+              }, err => {
+                self.$toast(`上传失败`)
+              })
+            }
+          }
+        }
       },
       submit() {
         if (this.frontUrl === this.idCardFront) {
@@ -149,7 +242,7 @@
             this.$toast.loading(`提交中`)
             setTimeout(() => {
               this.$router.replace({name: 'Submit'})
-            },3000)
+            }, 3000)
           }
           console.log(`提交申请 ===> `, res)
         })
