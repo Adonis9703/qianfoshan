@@ -1,5 +1,5 @@
-let baseUrl = 'https://qfsblyjmed.zwjk.com/'  //测试
-// let baseUrl =  'http://qfsblyj.zwjk.com/'  //生产
+// let baseUrl = 'https://qfsblyjmed.zwjk.com/'  //测试
+let baseUrl =  'http://qfsblyj.zwjk.com/'  //生产
 // let baseUrl = 'https://testjsb.zwjk.com/'
 export const api = {
   getAddress: baseUrl + 'address/getaddressinfo',         //获取地址信息

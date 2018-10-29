@@ -224,7 +224,7 @@
       },
       onRead3(file) {
         if (this.isIos) {
-          this.uploadInHand = file.content
+          this.inHandUrl = file.content
           let temp = new FormData()
           temp.append('file', file.file, file.file.name)
           this.$post({
@@ -241,7 +241,7 @@
             this.$toast(`上传成功`)
           })
         } else {
-          this.uploadInHand = file.content
+          this.inHandUrl = file.content
           let self = this
           if (/^image/.test(file.file.type)) {
             let reader = new FileReader()
