@@ -85,19 +85,51 @@
       },
       compress(img) {
         let canvas = document.createElement("canvas");
+        let tCanvas = document.createElement("canvas")
         let ctx = canvas.getContext("2d");
+        let tctx = tCanvas.getContext("2d")
         let initSize = img.src.length;
         let width = img.width;
         let height = img.height;
+
+        let ratio
+        if ((ratio = width * height / 8000000) > 1) {
+          ratio = Math.sqrt(ratio)
+          width /= ratio
+          height /= ratio
+        } else {
+          ratio
+        }
+
         canvas.width = width;
         canvas.height = height;
         // 铺底色
         ctx.fillStyle = "#fff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, width, height);
+        // ctx.drawImage(img, 0, 0, width, height);
+
+        let count
+        if ((count = width * height / 8000000) > 1) {
+          count = ~~(Math.sqrt(count) + 1)
+          let nw = ~~(width / count)
+          let nh = ~~(height / count)
+          tCanvas.width = nw
+          tCanvas.height = nh
+          for (let i = 0; i < count; i++) {
+            for (let j = 0; j < count; j++) {
+              tctx.drawImage(img, i * nw * ratio, j * nh * ratio, nw * ratio, nh * ratio, 0, 0, nw, nh);
+              ctx.drawImage(tCanvas, i * nw, j * nh, nw, nh);
+            }
+          }
+        } else {
+          ctx.drawImage(img, 0, 0, width, height);
+        }
 
         //进行最小压缩
         let ndata = canvas.toDataURL("image/jpeg", 0.1);
+        console.log(`压缩前：` + initSize)
+        console.log(`压缩后：` + ndata.length)
+        tCanvas.width = tCanvas.height = canvas.width = canvas.height = 0;
         return ndata;
       },
       dataURItoBlob(dataURI) {
@@ -113,173 +145,172 @@
         return new Blob([ia], {type: type});
       },
       onRead1(file) {
-        if (this.isIos) {
-          this.frontUrl = file.content
-          let temp = new FormData()
-          temp.append('file', file.file, file.file.name)
-          this.$post({
-            isLoading: true,
-            url: this.$api.uploadFront,
-            param: temp,
-            postType: 'file'
-          }).then(res => {
-            let user = this.$common.getUserInfoFMLocal()
-            user = Object.assign(user, {
-              ownIdcardFacade: res.data.url
-            })
-            this.$common.setUserInfo2Local(user)
-            this.$toast(`上传成功`)
-          }, err => {
-            this.$toast(`图片过大，上传失败`)
-          })
-        } else {
-          this.frontUrl = file.content
-          let self = this
-          if (/^image/.test(file.file.type)) {
-            let reader = new FileReader()
-            reader.readAsDataURL(file.file)
-            reader.onloadend = function () {
-              let result = this.result
-              let img = new Image()
-              img.src = result
-              img.onload = function () {
-                let data = self.compress(img)
-                self.imgUrl = result
-                let blob = self.dataURItoBlob(data)
-                let formData = new FormData()
-                formData.append("file", blob)
-                self.$post({
-                  isLoading: true,
-                  url: self.$api.uploadFront,
-                  param: formData,
-                  postType: 'file'
-                }).then(res => {
-                  let user = self.$common.getUserInfoFMLocal()
-                  user = Object.assign(user, {
-                    ownIdcardFacade: res.data.url
-                  })
-                  self.$common.setUserInfo2Local(user)
-                  self.$toast(`上传成功`)
-                }, err => {
-                  self.$toast(`图片过大，上传失败`)
+        // if (!this.isIos) {
+        //   this.frontUrl = file.content
+        //   let temp = new FormData()
+        //   temp.append('file', file.file, file.file.name)
+        //   this.$post({
+        //     isLoading: true,
+        //     url: this.$api.uploadFront,
+        //     param: temp,
+        //     postType: 'file'
+        //   }).then(res => {
+        //     let user = this.$common.getUserInfoFMLocal()
+        //     user = Object.assign(user, {
+        //       ownIdcardFacade: res.data.url
+        //     })
+        //     this.$common.setUserInfo2Local(user)
+        //     this.$toast(`上传成功`)
+        //   }, err => {
+        //     this.$toast(`图片过大，上传失败`)
+        //   })
+        // } else {
+        this.frontUrl = file.content
+        let self = this
+        if (/^image/.test(file.file.type)) {
+          let reader = new FileReader()
+          reader.readAsDataURL(file.file)
+          reader.onloadend = function () {
+            let result = this.result
+            let img = new Image()
+            img.src = result
+            img.onload = function () {
+              let data = self.compress(img)
+              self.imgUrl = result
+              let blob = self.dataURItoBlob(data)
+              let formData = new FormData()
+              formData.append("file", blob)
+              self.$post({
+                isLoading: true,
+                url: self.$api.uploadFront,
+                param: formData,
+                postType: 'file'
+              }).then(res => {
+                let user = self.$common.getUserInfoFMLocal()
+                user = Object.assign(user, {
+                  ownIdcardFacade: res.data.url
                 })
-              }
+                self.$common.setUserInfo2Local(user)
+                self.$toast(`上传成功`)
+              }, err => {
+                self.$toast(`图片过大，上传失败`)
+              })
             }
           }
         }
-
+        // }
       },
       onRead2(file) {
-        if (this.isIos) {
-          this.behindUrl = file.content
-          let temp = new FormData()
-          temp.append('file', file.file, file.file.name)
-          this.$post({
-            isLoading: true,
-            url: this.$api.uploadBehind,
-            param: temp,
-            postType: 'file'
-          }).then(res => {
-            let user = this.$common.getUserInfoFMLocal()
-            user = Object.assign(user, {
-              ownIdcardIdentity: res.data.url
-            })
-            this.$common.setUserInfo2Local(user)
-            this.$toast(`上传成功`)
-          }, err => {
-            this.$toast(`图片过大，上传失败`)
-          })
-        } else {
-          this.behindUrl = file.content
-          let self = this
-          if (/^image/.test(file.file.type)) {
-            let reader = new FileReader()
-            reader.readAsDataURL(file.file)
-            reader.onloadend = function () {
-              let result = this.result
-              let img = new Image()
-              img.src = result
-              img.onload = function () {
-                let data = self.compress(img)
-                self.imgUrl = result
-                let blob = self.dataURItoBlob(data)
-                let formData = new FormData()
-                formData.append("file", blob)
-                // self.behindUrl = file.content
-                self.$post({
-                  isLoading: true,
-                  url: self.$api.uploadBehind,
-                  param: formData,
-                  postType: 'file'
-                }).then(res => {
-                  let user = self.$common.getUserInfoFMLocal()
-                  user = Object.assign(user, {
-                    ownIdcardIdentity: res.data.url
-                  })
-                  self.$common.setUserInfo2Local(user)
-                  self.$toast(`上传成功`)
-                }, err => {
-                  self.$toast(`图片过大，上传失败`)
+        // if (this.isIos) {
+        //   this.behindUrl = file.content
+        //   let temp = new FormData()
+        //   temp.append('file', file.file, file.file.name)
+        //   this.$post({
+        //     isLoading: true,
+        //     url: this.$api.uploadBehind,
+        //     param: temp,
+        //     postType: 'file'
+        //   }).then(res => {
+        //     let user = this.$common.getUserInfoFMLocal()
+        //     user = Object.assign(user, {
+        //       ownIdcardIdentity: res.data.url
+        //     })
+        //     this.$common.setUserInfo2Local(user)
+        //     this.$toast(`上传成功`)
+        //   }, err => {
+        //     this.$toast(`图片过大，上传失败`)
+        //   })
+        // } else {
+        this.behindUrl = file.content
+        let self = this
+        if (/^image/.test(file.file.type)) {
+          let reader = new FileReader()
+          reader.readAsDataURL(file.file)
+          reader.onloadend = function () {
+            let result = this.result
+            let img = new Image()
+            img.src = result
+            img.onload = function () {
+              let data = self.compress(img)
+              self.imgUrl = result
+              let blob = self.dataURItoBlob(data)
+              let formData = new FormData()
+              formData.append("file", blob)
+              // self.behindUrl = file.content
+              self.$post({
+                isLoading: true,
+                url: self.$api.uploadBehind,
+                param: formData,
+                postType: 'file'
+              }).then(res => {
+                let user = self.$common.getUserInfoFMLocal()
+                user = Object.assign(user, {
+                  ownIdcardIdentity: res.data.url
                 })
-              }
+                self.$common.setUserInfo2Local(user)
+                self.$toast(`上传成功`)
+              }, err => {
+                self.$toast(`图片过大，上传失败`)
+              })
             }
           }
+          // }
         }
       },
       onRead3(file) {
-        if (this.isIos) {
-          this.inHandUrl = file.content
-          let temp = new FormData()
-          temp.append('file', file.file, file.file.name)
-          this.$post({
-            isLoading: true,
-            url: this.$api.uploadInHand,
-            param: temp,
-            postType: 'file'
-          }).then(res => {
-            let user = this.$common.getUserInfoFMLocal()
-            user = Object.assign(user, {
-              ownWithIdcardUrl: res.data.url
-            })
-            this.$common.setUserInfo2Local(user)
-            this.$toast(`上传成功`)
-          }, err => {
-            this.$toast(`图片过大，上传失败`)
-          })
-        } else {
-          this.inHandUrl = file.content
-          let self = this
-          if (/^image/.test(file.file.type)) {
-            let reader = new FileReader()
-            reader.readAsDataURL(file.file)
-            reader.onloadend = function () {
-              let result = this.result
-              let img = new Image()
-              img.src = result
-              img.onload = function () {
-                let data = self.compress(img)
-                self.imgUrl = result
-                let blob = self.dataURItoBlob(data)
-                let formData = new FormData()
-                formData.append("file", blob)
-                self.$post({
-                  isLoading: true,
-                  url: self.$api.uploadInHand,
-                  param: formData,
-                  postType: 'file'
-                }).then(res => {
-                  let user = self.$common.getUserInfoFMLocal()
-                  user = Object.assign(user, {
-                    ownWithIdcardUrl: res.data.url
-                  })
-                  self.$common.setUserInfo2Local(user)
-                  self.$toast(`上传成功`)
-                }, err => {
-                  self.$toast(`图片过大，上传失败`)
+        // if (this.isIos) {
+        //   this.inHandUrl = file.content
+        //   let temp = new FormData()
+        //   temp.append('file', file.file, file.file.name)
+        //   this.$post({
+        //     isLoading: true,
+        //     url: this.$api.uploadInHand,
+        //     param: temp,
+        //     postType: 'file'
+        //   }).then(res => {
+        //     let user = this.$common.getUserInfoFMLocal()
+        //     user = Object.assign(user, {
+        //       ownWithIdcardUrl: res.data.url
+        //     })
+        //     this.$common.setUserInfo2Local(user)
+        //     this.$toast(`上传成功`)
+        //   }, err => {
+        //     this.$toast(`图片过大，上传失败`)
+        //   })
+        // } else {
+        this.inHandUrl = file.content
+        let self = this
+        if (/^image/.test(file.file.type)) {
+          let reader = new FileReader()
+          reader.readAsDataURL(file.file)
+          reader.onloadend = function () {
+            let result = this.result
+            let img = new Image()
+            img.src = result
+            img.onload = function () {
+              let data = self.compress(img)
+              self.imgUrl = result
+              let blob = self.dataURItoBlob(data)
+              let formData = new FormData()
+              formData.append("file", blob)
+              self.$post({
+                isLoading: true,
+                url: self.$api.uploadInHand,
+                param: formData,
+                postType: 'file'
+              }).then(res => {
+                let user = self.$common.getUserInfoFMLocal()
+                user = Object.assign(user, {
+                  ownWithIdcardUrl: res.data.url
                 })
-              }
+                self.$common.setUserInfo2Local(user)
+                self.$toast(`上传成功`)
+              }, err => {
+                self.$toast(`图片过大，上传失败`)
+              })
             }
           }
+          // }
         }
       },
       submit() {
