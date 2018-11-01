@@ -334,7 +334,7 @@
             this.$toast.loading(`提交中`)
             setTimeout(() => {
               this.$router.replace({name: 'Submit'})
-            }, 3000)
+            }, 2500)
           }
         }, err => {
           this.$toast(`网络状况不佳，请稍后再试`)
