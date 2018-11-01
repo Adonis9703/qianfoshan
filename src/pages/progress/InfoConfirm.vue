@@ -129,6 +129,8 @@
             })
             this.$common.setUserInfo2Local(user)
             this.$toast(`上传成功`)
+          }, err => {
+            this.$toast(`图片过大，上传失败`)
           })
         } else {
           this.frontUrl = file.content
@@ -159,7 +161,7 @@
                   self.$common.setUserInfo2Local(user)
                   self.$toast(`上传成功`)
                 }, err => {
-                  self.$toast(`上传失败`)
+                  self.$toast(`图片过大，上传失败`)
                 })
               }
             }
@@ -184,6 +186,8 @@
             })
             this.$common.setUserInfo2Local(user)
             this.$toast(`上传成功`)
+          }, err => {
+            this.$toast(`图片过大，上传失败`)
           })
         } else {
           this.behindUrl = file.content
@@ -215,7 +219,7 @@
                   self.$common.setUserInfo2Local(user)
                   self.$toast(`上传成功`)
                 }, err => {
-                  self.$toast(`上传失败`)
+                  self.$toast(`图片过大，上传失败`)
                 })
               }
             }
@@ -239,6 +243,8 @@
             })
             this.$common.setUserInfo2Local(user)
             this.$toast(`上传成功`)
+          }, err => {
+            this.$toast(`图片过大，上传失败`)
           })
         } else {
           this.inHandUrl = file.content
@@ -269,7 +275,7 @@
                   self.$common.setUserInfo2Local(user)
                   self.$toast(`上传成功`)
                 }, err => {
-                  self.$toast(`上传失败`)
+                  self.$toast(`图片过大，上传失败`)
                 })
               }
             }
@@ -299,6 +305,8 @@
               this.$router.replace({name: 'Submit'})
             }, 3000)
           }
+        }, err => {
+          this.$toast(`网络状况不佳，请稍后再试`)
         })
       }
     }
