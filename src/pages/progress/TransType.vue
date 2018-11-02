@@ -32,14 +32,15 @@
       </div>
       <div class="field ">
         <span class="title">详细地址</span>
-        <textarea class="detail" type="text" maxlength="50" placeholder="请输入街道、楼牌号等详细信息" v-model.trim="address.detailAddress"></textarea>
+        <textarea class="detail" type="text" maxlength="50" placeholder="请输入街道、楼牌号等详细信息"
+                  v-model.trim="address.detailAddress"></textarea>
       </div>
     </div>
     <div class="foot">
       <van-button class="blue-btn" @click="nextStep">下一步</van-button>
     </div>
     <van-popup v-model="isChooseShow" position="bottom">
-      <van-area :area-list="areaList" @confirm="confirm" @cancel="isChooseShow = false"
+      <van-area value="370100" :area-list="areaList" @confirm="confirm" @cancel="isChooseShow = false"
                 :class="{show: isChooseShow}"></van-area>
 
     </van-popup>
@@ -92,9 +93,9 @@
         let province = data[0].name
         let sendAddress = ''
         if (['北京市', '天津市', '重庆市', '上海市'].indexOf(province) > -1) {
-          sendAddress = data[0].name + data[2].name
+          sendAddress = data[0].name + ' ' + data[2].name
         } else {
-          sendAddress = data[0].name + data[1].name + data[2].name
+          sendAddress = data[0].name + ' ' + data[1].name + ' ' + data[2].name
         }
         this.address = Object.assign({}, this.address, {
           sendAddress: sendAddress

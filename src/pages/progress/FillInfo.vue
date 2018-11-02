@@ -18,7 +18,7 @@
         <button v-else class="code-btn-wait" disabled>重新获取({{count}}s)</button>
       </div>
       <div class="field">
-        <span class="title">身份证号</span>
+        <span class="title" style="width: 6rem;margin-right: .5rem">患者身份证号</span>
         <input v-model="formData.idCard" maxlength="18" type="text" placeholder="请输入身份证号"/>
       </div>
     </div>
@@ -57,6 +57,7 @@
               :disabled="formData.inpatientState==0" @click="selectTime(2)"/>
       </div>
     </div>
+    <div class="tip">请务必核实所填出入院日期，若因填写有误所导致的后果由本人自行承担。</div>
     <div class="known-check font-size88 flex-align" @click="known=!known">
       <div class="check inline-block"><i v-show="known" class="van-icon van-icon-success"/></div>
       我已阅读
@@ -298,6 +299,13 @@
 <style lang="scss" scoped>
 
   .fillInfo {
+    .tip {
+      width: 100%;
+      background-color: #fff0e6;
+      color: #ff8646;
+      padding: .5rem 0.88rem;
+      font-size: .88rem;
+    }
     .error {
       font-family: PingFang-SC-Medium;
       padding: 1.75rem 3.5rem;

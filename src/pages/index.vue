@@ -3,7 +3,7 @@
     <div class="top-card">
       <div class="content">
         <div class="title">
-          邮寄报告单
+          病案邮寄
         </div>
         <div class="intro">
           “在线病案邮寄服务”是由山东省千佛山医院推出的一项全新的便民服务，您可以在线申请、物流查询，便捷获取打印病案。

@@ -10,6 +10,12 @@
         <div class="tips">
           3、照片需免冠，手持身份证正面“五官必须清晰可见”，身份证与身体保持平行，并且靠近摄像头，建议不要化妆。
         </div>
+        <div class="tips">
+          4、住院患者若无身份证，也可提供出生证明、户口本、死亡证明或监护人身份证照片。
+        </div>
+        <div class="tips">
+          5、其他问题请咨询：0531-89268350。
+        </div>
       </div>
     </div>
     <div class="bgcolor-white text-align-center content">
@@ -20,7 +26,7 @@
           <img :src="imageEdit"/>
         </div>
       </van-uploader>
-      <div class="title font-size88">示例：身份证人像面（正面）</div>
+      <div class="title font-size88">示例：住院患者身份证人面像（正面）</div>
 
       <van-uploader :after-read="onRead2" accept="image/*">
         <img :src="behindUrl" class="img"/>
@@ -28,7 +34,7 @@
           <img :src="imageEdit"/>
         </div>
       </van-uploader>
-      <div class="title font-size88">示例：身份证团徽面（反面）</div>
+      <div class="title font-size88">示例：住院患者身份证国徽像（反面）</div>
 
       <van-uploader :after-read="onRead3" accept="image/*">
         <img :src="inHandUrl" class="img"/>
@@ -36,7 +42,7 @@
           <img :src="imageEdit"/>
         </div>
       </van-uploader>
-      <div class="title font-size88">示例：手持身份证（正面）</div>
+      <div class="title font-size88">示例：住院患者手持身份证（正面）</div>
     </div>
     <div class="foot">
       <van-button class="blue-btn" @click="submit">提交申请</van-button>
@@ -358,7 +364,7 @@
     .tips {
       color: #666666;
       font-size: 0.88rem;
-      line-height: 1.31rem;
+      line-height: 1.35rem;
       font-family: PingFangSC-Regular;
       letter-spacing: .01rem;
     }
