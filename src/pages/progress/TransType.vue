@@ -236,7 +236,7 @@
     }
 
     .panel {
-      height: 6.81rem;
+      /*height: 6.81rem;*/
       padding: 1.38rem 0.88rem;
       .title {
         font-size: 1rem;
