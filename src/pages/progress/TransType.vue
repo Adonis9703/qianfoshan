@@ -40,7 +40,7 @@
       <van-button class="blue-btn" @click="nextStep">下一步</van-button>
     </div>
     <van-popup v-model="isChooseShow" position="bottom">
-      <van-area value="370100" :area-list="areaList" @confirm="confirm" @cancel="isChooseShow = false"
+      <van-area value="370100" :value="'370100'" :area-list="areaList" @confirm="confirm" @cancel="isChooseShow = false"
                 :class="{show: isChooseShow}"></van-area>
 
     </van-popup>
