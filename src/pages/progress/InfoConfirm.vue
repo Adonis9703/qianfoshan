@@ -3,7 +3,7 @@
     <div class="tip-top font-size88">
       <div style="margin-bottom: .5rem">拍照注意事项</div>
       <div class="tips">
-        1、请注意第一张是“身份证正面”，第二张是“身份证反面”，第三张是“手持身份证正面”。
+        1、请注意第一张是“患者身份证正面”，第二张是“患者身份证反面”，第三张是“患者手持身份证正面”。
         <div class="tips">
           2、拍照时请确保“身份证”所有信息清晰可见。
         </div>

@@ -29,7 +29,7 @@
     <div class="cover" v-show="isChooseShow" @click="isChooseShow = false"></div>
     <div style="margin-top: 4rem;margin-right: 1px"></div>
     <van-popup v-model="isChooseShow" position="bottom">
-      <van-area :area-list="areaList" @confirm="confirm" @cancel="isChooseShow = false"
+      <van-area value="370100" :value="'370100'" :area-list="areaList" @confirm="confirm" @cancel="isChooseShow = false"
                 :class="{show: isChooseShow}"></van-area>
 
     </van-popup>
