@@ -64,10 +64,18 @@
     letter-spacing: 0.01rem;
   }
 
+  @media screen and (max-width: 320px)   {
+    .step {
+      /*float: left;*/
+      display: inline-block;
+      margin: 0 .7rem !important;
+      color: #999999;
+    }
+  }
   .step {
     /*float: left;*/
     display: inline-block;
-    margin: 0 1rem;
+    margin: 0 1.1rem;
     color: #999999;
   }
 

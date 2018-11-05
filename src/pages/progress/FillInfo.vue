@@ -63,7 +63,7 @@
       我已阅读
       <span class="color-blue inline-block" @click.stop="$router.push({name: 'Index'})">  《预约须知》</span>
     </div>
-    <div style="background-color: #f6f6f6;height: 60px;width: 1px"></div>
+    <div style="background-color: #f6f6f6;height: 5rem;width: 1px"></div>
     <div class="foot">
       <van-button type="default" class="width100 font-size106 margin-right"
                   @click.stop="$router.push({name: 'AskRecord'})">申请记录
