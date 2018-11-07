@@ -171,7 +171,6 @@
         //     this.$toast(`图片过大，上传失败`)
         //   })
         // } else {
-        this.frontUrl = file.content
         let self = this
         if (/^image/.test(file.file.type)) {
           let reader = new FileReader()
@@ -192,6 +191,7 @@
                 param: formData,
                 postType: 'file'
               }).then(res => {
+                self.frontUrl = file.content
                 let user = self.$common.getUserInfoFMLocal()
                 user = Object.assign(user, {
                   ownIdcardFacade: res.data.url
@@ -227,7 +227,7 @@
         //     this.$toast(`图片过大，上传失败`)
         //   })
         // } else {
-        this.behindUrl = file.content
+
         let self = this
         if (/^image/.test(file.file.type)) {
           let reader = new FileReader()
@@ -249,6 +249,7 @@
                 param: formData,
                 postType: 'file'
               }).then(res => {
+                self.behindUrl = file.content
                 let user = self.$common.getUserInfoFMLocal()
                 user = Object.assign(user, {
                   ownIdcardIdentity: res.data.url
@@ -284,7 +285,7 @@
         //     this.$toast(`图片过大，上传失败`)
         //   })
         // } else {
-        this.inHandUrl = file.content
+
         let self = this
         if (/^image/.test(file.file.type)) {
           let reader = new FileReader()
@@ -305,6 +306,7 @@
                 param: formData,
                 postType: 'file'
               }).then(res => {
+                self.inHandUrl = file.content
                 let user = self.$common.getUserInfoFMLocal()
                 user = Object.assign(user, {
                   ownWithIdcardUrl: res.data.url
@@ -341,6 +343,8 @@
             setTimeout(() => {
               this.$router.replace({name: 'Submit'})
             }, 2500)
+          } else {
+            this.$toast(res.data.I)
           }
         }, err => {
           this.$toast(`网络状况不佳，请稍后再试`)
